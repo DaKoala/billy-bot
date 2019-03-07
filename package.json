@@ -1,0 +1,20 @@
+{
+  "name": "billy-bot",
+  "version": "1.0.0",
+  "description": "Billy's Slack Bot",
+  "main": "src/app.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "lint": "eslint **/*.js"
+  },
+  "author": "Billy Zou",
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
