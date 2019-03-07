@@ -7,6 +7,7 @@ const app = express();
 const IS_CHALLENGE = false;
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 if (IS_CHALLENGE) {
     app.use((req, res) => {
         res.send({
@@ -25,12 +26,19 @@ app.post('/', async (req, res) => {
         return;
     }
 
-    console.log(payload.event);
-
     if (type === 'app_mention') {
         handler.mentionHandler(payload);
     } else if (type === 'message') {
         handler.messageHandler(payload);
+    }
+});
+
+app.post('/command', async (req, res) => {
+    const { body } = req;
+    const type = body.command;
+
+    if (type === '/register') {
+        handler.registerHandler(body, res);
     }
 });
 

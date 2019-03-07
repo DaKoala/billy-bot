@@ -1,5 +1,20 @@
+const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync');
 const message = require('../message/message');
 const payloadParser = require('../util/payload-parser');
+
+const adapter = new FileSync('../db.json');
+const db = low(adapter);
+
+db.defaults({
+    user: {},
+}).write();
+
+function registerHandler(body, res) {
+    res.send({
+        text: `Welcome to our class, ${body.text}! Now you can submit Learning Logs and Ticket To Leave in the Slack Channel!`,
+    });
+}
 
 function mentionHandler(payload) {
     message.sendMessage({
@@ -24,6 +39,7 @@ function messageHandler(payload) {
 }
 
 module.exports = {
+    registerHandler,
     mentionHandler,
     messageHandler,
 };
