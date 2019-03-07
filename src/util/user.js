@@ -1,5 +1,6 @@
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
+const moment = require('../util/moment');
 
 const adapter = new FileSync('db.json');
 const db = low(adapter);
@@ -31,16 +32,34 @@ function hasTicketToLeaveToday(userId) {
         .value() !== undefined;
 }
 
+function hasLearningLogThisWeek(userId) {
+    const logs = db.get(`user.${userId}.learningLog`)
+        .value();
+    const latestLog = logs[logs.length - 1];
+    if (!latestLog) {
+        return false;
+    }
+    return moment.areInTheSameWeek(latestLog.date, new Date().toDateString());
+}
+
 function addTicketToLeave(userId, content) {
     db.get(`user.${userId}.ticketToLeave`)
         .push({ content, date: new Date().toLocaleDateString() })
         .write();
 }
 
+function addLearningLog(userId, content) {
+    db.get(`user.${userId}.learningLog`)
+        .push({ content, date: new Date().toDateString() })
+        .write();
+}
+
 module.exports = {
     hasUser,
     hasTicketToLeaveToday,
+    hasLearningLogThisWeek,
     addTicketToLeave,
+    addLearningLog,
     getUsername,
     registerUser,
 };

@@ -5,6 +5,28 @@ const user = require('../util/user');
 function learningLogHandler(payload) {
     const text = payloadParser.getText(payload).substring(3).trim();
     const userId = payloadParser.getUser(payload);
+    if (!user.hasUser(userId)) {
+        message.sendEphemeral({
+            channel: payloadParser.getChannel(payload),
+            text: 'You have not registered yet. Please use the `/register <your-name>` command to register!',
+            user: userId,
+        });
+        return;
+    }
+    if (user.hasLearningLogThisWeek(userId)) {
+        message.sendEphemeral({
+            channel: payloadParser.getChannel(payload),
+            text: 'Slow down your pace! Please submit at most 1 Learning Log every week.',
+            user: userId,
+        });
+    } else {
+        user.addLearningLog(userId, text);
+        message.sendEphemeral({
+            channel: payloadParser.getChannel(payload),
+            text: 'Seems you learned a lot this week, nice job!',
+            user: userId,
+        });
+    }
 }
 
 function tickToLeaveHandler(payload) {
@@ -21,7 +43,7 @@ function tickToLeaveHandler(payload) {
     if (user.hasTicketToLeaveToday(userId)) {
         message.sendEphemeral({
             channel: payloadParser.getChannel(payload),
-            text: 'It seems you have already submitted your Ticket To Leave...',
+            text: 'You have already submitted your Ticket To Leave, enjoy your day!',
             user: userId,
         });
     } else {
