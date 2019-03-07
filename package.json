@@ -4,8 +4,8 @@
   "description": "Billy's Slack Bot",
   "main": "src/app.js",
   "scripts": {
-    "dev": "nodemon app.js",
-    "lint": "eslint **/*.js",
+    "dev": "nodemon --ignore db.json app.js",
+    "lint": "eslint src/**",
     "ngrok": "ngrok http 3000 -host-header='localhost:3000'"
   },
   "author": "Billy Zou",

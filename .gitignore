@@ -5,6 +5,9 @@
 ### Config file
 token.js
 
+### Database file
+db.json
+
 ### Node template
 # Logs
 logs
