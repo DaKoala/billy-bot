@@ -2,6 +2,9 @@
 ### Editor
 .idea
 
+### Config file
+token.js
+
 ### Node template
 # Logs
 logs
