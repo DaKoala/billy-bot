@@ -1,7 +1,7 @@
 const express = require('express');
-const axios = require('axios');
 const bodyParser = require('body-parser');
-const send = require('./message/send');
+const payloadParser = require('./util/payload-parser');
+const handler = require('./message/handler');
 
 const app = express();
 const IS_CHALLENGE = false;
@@ -18,7 +18,7 @@ if (IS_CHALLENGE) {
 
 app.post('/', async (req, res) => {
     const payload = req.body;
-    const { type } = payload.event;
+    const type = payloadParser.getType(payload);
     res.sendStatus(200);
 
     /* Let the bot not respond to itself */
@@ -26,11 +26,12 @@ app.post('/', async (req, res) => {
         return;
     }
 
+    console.log(payload.event);
+
     if (type === 'app_mention') {
-        send.sendMessage({
-            channel: payload.event.channel,
-            text: 'Hello, world!',
-        });
+        handler.mentionHandler(payload);
+    } else if (type === 'message') {
+        handler.messageHandler(payload);
     }
 });
 
