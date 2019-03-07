@@ -1,28 +1,17 @@
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
 const message = require('../message/message');
 const payloadParser = require('../util/payload-parser');
-
-const adapter = new FileSync('db.json');
-const db = low(adapter);
-
-db.defaults({
-    user: {},
-}).write();
+const user = require('../util/user');
 
 function registerHandler(body, res) {
     const userId = body.user_id;
-    const hasUser = db.get(`user.${userId}`).value() !== undefined;
+    const hasUser = user.hasUser(userId);
     if (hasUser) {
-        const name = db.get(`user.${userId}.name`).value();
+        const name = user.getUsername(userId);
         res.send({
             text: `Hi ${name}! You have already registered.`,
         });
     } else {
-        const init = {
-            name: body.text,
-        };
-        db.set(`user.${userId}`, init).write();
+        user.registerUser(userId, body.text);
         res.send({
             text: `Welcome to our class, ${body.text}! Now you can submit Learning Logs and Ticket To Leave in the Slack Channel!`,
         });
