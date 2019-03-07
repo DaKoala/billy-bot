@@ -8,11 +8,10 @@ const IS_CHALLENGE = false;
 
 app.use(bodyParser.json());
 if (IS_CHALLENGE) {
-    app.use((req, res, next) => {
+    app.use((req, res) => {
         res.send({
             challenge: req.body.challenge,
         });
-        next();
     });
 }
 
