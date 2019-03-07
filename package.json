@@ -5,7 +5,8 @@
   "main": "src/app.js",
   "scripts": {
     "dev": "nodemon app.js",
-    "lint": "eslint **/*.js"
+    "lint": "eslint **/*.js",
+    "ngrok": "ngrok http 3000 -host-header='localhost:3000'"
   },
   "author": "Billy Zou",
   "license": "GPL-3.0-or-later",
@@ -15,6 +16,7 @@
     "eslint-plugin-import": "^2.16.0"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.4"
   }
 }
