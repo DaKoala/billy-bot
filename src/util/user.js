@@ -19,6 +19,8 @@ function getUsername(userId) {
 function registerUser(userId, name) {
     const init = {
         name,
+        learningLog: [],
+        tickToLeave: [],
     };
     db.set(`user.${userId}`, init).write();
 }

@@ -2,6 +2,20 @@ const message = require('../message/message');
 const payloadParser = require('../util/payload-parser');
 const user = require('../util/user');
 
+function learningLogHandler(payload) {
+    message.sendMessage({
+        channel: payloadParser.getChannel(payload),
+        text: 'I got your learning log.',
+    });
+}
+
+function tickToLeaveHandler(payload) {
+    message.sendMessage({
+        channel: payloadParser.getChannel(payload),
+        text: 'I got your tick to leave',
+    });
+}
+
 function registerHandler(body, res) {
     const userId = body.user_id;
     const hasUser = user.hasUser(userId);
@@ -34,10 +48,11 @@ function messageHandler(payload) {
         return;
     }
 
-    message.sendMessage({
-        channel: payloadParser.getChannel(payload),
-        text: 'Hello world!',
-    });
+    if (text.substring(0, 3) === '#LL') {
+        learningLogHandler(payload);
+    } else if (text.substring(0, 4) === '#TTL') {
+        tickToLeaveHandler(payload);
+    }
 }
 
 module.exports = {
