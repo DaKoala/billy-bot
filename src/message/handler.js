@@ -3,17 +3,35 @@ const payloadParser = require('../util/payload-parser');
 const user = require('../util/user');
 
 function learningLogHandler(payload) {
-    message.sendMessage({
-        channel: payloadParser.getChannel(payload),
-        text: 'I got your learning log.',
-    });
+    const text = payloadParser.getText(payload).substring(3).trim();
+    const userId = payloadParser.getUser(payload);
 }
 
 function tickToLeaveHandler(payload) {
-    message.sendMessage({
-        channel: payloadParser.getChannel(payload),
-        text: 'I got your tick to leave',
-    });
+    const text = payloadParser.getText(payload).substring(4).trim();
+    const userId = payloadParser.getUser(payload);
+    if (!user.hasUser(userId)) {
+        message.sendEphemeral({
+            channel: payloadParser.getChannel(payload),
+            text: 'You have not registered yet. Please use the `/register <your-name>` command to register!',
+            user: userId,
+        });
+        return;
+    }
+    if (user.hasTicketToLeaveToday(userId)) {
+        message.sendEphemeral({
+            channel: payloadParser.getChannel(payload),
+            text: 'It seems you have already submitted your Ticket To Leave...',
+            user: userId,
+        });
+    } else {
+        user.addTicketToLeave(userId, text);
+        message.sendEphemeral({
+            channel: payloadParser.getChannel(payload),
+            text: 'You can leave now, have a nice day!',
+            user: userId,
+        });
+    }
 }
 
 function registerHandler(body, res) {
@@ -48,9 +66,9 @@ function messageHandler(payload) {
         return;
     }
 
-    if (text.substring(0, 3) === '#LL') {
+    if (text.substring(0, 3).toUpperCase() === '#LL') {
         learningLogHandler(payload);
-    } else if (text.substring(0, 4) === '#TTL') {
+    } else if (text.substring(0, 4).toUpperCase() === '#TTL') {
         tickToLeaveHandler(payload);
     }
 }

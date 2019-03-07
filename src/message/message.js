@@ -25,6 +25,18 @@ function sendMessage(params) {
     });
 }
 
+function sendEphemeral(params) {
+    return get({
+        url: api.POST_EPHEMERAL,
+        data: {
+            channel: params.channel,
+            text: params.text,
+            user: params.user,
+        },
+    });
+}
+
 module.exports = {
     sendMessage,
+    sendEphemeral,
 };

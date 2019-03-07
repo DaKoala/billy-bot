@@ -1,3 +1,11 @@
+function getUser(payload) {
+    const { user } = payload.event;
+    if (!user) {
+        throw new Error('Payload event does not have property user!');
+    }
+    return user;
+}
+
 function getType(payload) {
     const { type } = payload.event;
     if (!type) {
@@ -23,6 +31,7 @@ function getText(payload) {
 }
 
 module.exports = {
+    getUser,
     getChannel,
     getType,
     getText,
