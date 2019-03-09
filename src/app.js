@@ -39,6 +39,8 @@ app.post('/command', async (req, res) => {
 
     if (type === '/register') {
         handler.registerHandler(body, res);
+    } else if (type === '/get-ttl') {
+        handler.getTTLHanlder(body, res);
     }
 });
 

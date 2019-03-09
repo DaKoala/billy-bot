@@ -46,12 +46,14 @@ function addTicketToLeave(userId, content) {
     db.get(`user.${userId}.ticketToLeave`)
         .push({ content, date: new Date().toLocaleDateString() })
         .write();
+    return db.get(`user.${userId}.ticketToLeave`).value().length;
 }
 
 function addLearningLog(userId, content) {
     db.get(`user.${userId}.learningLog`)
         .push({ content, date: new Date().toDateString() })
         .write();
+    return db.get(`user.${userId}.learningLog`).value().length;
 }
 
 module.exports = {
