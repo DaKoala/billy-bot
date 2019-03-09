@@ -4,6 +4,22 @@ const user = require('../util/user');
 const course = require('../settings');
 
 /* private function */
+function generateRank(num) {
+    if (num % 100 === 11 || num % 100 === 12 || num % 100 === 13) {
+        return `${num}-th`;
+    }
+    if (num % 10 === 1) {
+        return `${num}-st`;
+    }
+    if (num % 10 === 2) {
+        return `${num}-nd`;
+    }
+    if (num % 10 === 3) {
+        return `${num}-rd`;
+    }
+    return `${num}-th`;
+}
+
 function isNotRegistered(payload) {
     const userId = payloadParser.getUser(payload);
     const isExisted = user.hasUser(userId);
@@ -51,7 +67,7 @@ function learningLogHandler(payload) {
         const count = user.addLearningLog(userId, text);
         message.sendEphemeral({
             channel: payloadParser.getChannel(payload),
-            text: `Nice work! You have already submitted ${count} learning log(s) and you are required to submit ${course.LL_NUMBER} learning logs this semester. You can use the command \`/get-ll\` to retrieve your learning logs.`,
+            text: `Nice work! This is the ${generateRank(count)} learning log you submitted and you are required to submit ${course.LL_NUMBER} learning logs this semester. You can use the command \`/get-ll\` to retrieve your learning logs.`,
             user: userId,
         });
     }
@@ -101,6 +117,19 @@ function getLLHandler(body, res) {
     if (isNotRegisteredCommand(userId, res)) {
         return;
     }
+    let result = '';
+    const learningLogs = user.getLearningLog(userId);
+    if (body.text === '') {
+        result += `You have submitted ${learningLogs.length} learning log(s) this semester.\n\n`;
+        learningLogs.forEach((log, index) => {
+            result += `Learning Log *${index + 1}* (submitted on ${log.date}):\n`;
+            result += log.content;
+            result += '\n\n';
+        });
+    }
+    res.send({
+        text: result,
+    });
 }
 
 /* main handler */
@@ -124,4 +153,5 @@ module.exports = {
     registerHandler,
     mentionHandler,
     messageHandler,
+    getLLHandler,
 };

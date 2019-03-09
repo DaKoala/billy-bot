@@ -56,12 +56,17 @@ function addLearningLog(userId, content) {
     return db.get(`user.${userId}.learningLog`).value().length;
 }
 
+function getLearningLog(userId) {
+    return db.get(`user.${userId}.learningLog`).value();
+}
+
 module.exports = {
     hasUser,
     hasTicketToLeaveToday,
     hasLearningLogThisWeek,
     addTicketToLeave,
     addLearningLog,
+    getLearningLog,
     getUsername,
     registerUser,
 };
