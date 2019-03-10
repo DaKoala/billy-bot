@@ -85,7 +85,13 @@ function tickToLeaveHandler(payload) {
     if (isNotRegistered(payload)) {
         return;
     }
-    if (user.hasTicketToLeaveToday(userId)) {
+    if (!course.CLASS_DAYS.includes(new Date().getDay())) {
+        message.sendEphemeral({
+            channel: payloadParser.getChannel(payload),
+            text: 'You do not need to submit a Ticket To Leave because there is no class scheduled today!',
+            user: userId,
+        });
+    } else if (user.hasTicketToLeaveToday(userId)) {
         message.sendEphemeral({
             channel: payloadParser.getChannel(payload),
             text: 'You have already submitted your Ticket To Leave, enjoy your day!',
@@ -132,6 +138,10 @@ function getLLHandler(body, res) {
     });
 }
 
+function checkTTLHandler(body, res) {
+
+}
+
 /* main handler */
 function messageHandler(payload) {
     const text = payloadParser.getText(payload);
@@ -154,4 +164,5 @@ module.exports = {
     mentionHandler,
     messageHandler,
     getLLHandler,
+    checkTTLHandler,
 };

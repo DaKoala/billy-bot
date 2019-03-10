@@ -51,11 +51,19 @@ app.post('/command', async (req, res) => {
         const index = parseInt(text, 10);
         if (text !== '' && (Number.isNaN(index) || index <= 0)) {
             res.send({
-                text: 'Not a valid index. Please enter a positive integer or omit the parameter to search all learning logs.',
+                text: 'I cannot understand. Please enter a positive integer or omit the parameter to search all learning logs.',
             });
             return;
         }
         handler.getLLHandler(body, res);
+    } else if (type === '/check-ttl') {
+        if (text !== '' && Number.isNaN(new Date(text).getTime())) {
+            res.send({
+                text: 'I cannot understand. Please enter a date in the format MM/DD/YYYY or omit the parameter to check all class days',
+            });
+            return;
+        }
+        handler.checkTTLHandler(body, res);
     }
 });
 
