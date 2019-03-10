@@ -139,7 +139,16 @@ function getLLHandler(body, res) {
 }
 
 function checkTTLHandler(body, res) {
-
+    const userId = body.user_id;
+    const name = user.getUsername(userId);
+    const result = user.checkTicketToLeave(userId);
+    const text = stringfy.reportTicketToLeave({
+        name,
+        checkResult: result,
+    });
+    res.send({
+        text,
+    });
 }
 
 /* main handler */

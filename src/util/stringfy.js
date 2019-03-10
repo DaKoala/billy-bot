@@ -41,7 +41,27 @@ function reportLearningLog(params) {
     return result;
 }
 
+function reportTicketToLeave(params) {
+    let pass = 0;
+    let fail = 0;
+    const result = [];
+    params.checkResult.forEach((item) => {
+        let icon;
+        if (item.exist) {
+            icon = '✅';
+            pass += 1;
+        } else {
+            icon = '❌';
+            fail += 1;
+        }
+        result.push(`${item.date}: ${icon}`);
+    });
+    result.unshift(`There are ${pass + fail} scheduled classes. ${params.name} submitted ${pass} TTL(s) and missed ${fail} TTL(s).`);
+    return result.join('\n');
+}
+
 
 module.exports = {
     reportLearningLog,
+    reportTicketToLeave,
 };

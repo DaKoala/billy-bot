@@ -13,7 +13,20 @@ db.defaults({
 }).write();
 
 function appendClassDay() {
-    db.get('course.days').push(new Date().toDateString())
+    db.get('course.days').push(new Date().toDateString());
+}
+
+function checkTicketToLeave(userId) {
+    const result = [];
+    const classDays = db.get('course.days').value();
+    const tickets = db.get(`user.${userId}.ticketToLeave`);
+    classDays.forEach((dateStr) => {
+        result.push({
+            date: dateStr,
+            exist: tickets.find({ date: dateStr }).value() !== undefined,
+        });
+    });
+    return result;
 }
 
 function hasUser(userId) {
@@ -68,6 +81,8 @@ function getLearningLog(userId) {
 }
 
 module.exports = {
+    appendClassDay,
+    checkTicketToLeave,
     hasUser,
     hasTicketToLeaveToday,
     hasLearningLogThisWeek,
