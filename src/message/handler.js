@@ -2,6 +2,7 @@ const message = require('../message/message');
 const payloadParser = require('../util/payload-parser');
 const user = require('../util/user');
 const course = require('../settings');
+const stringfy = require('../util/stringfy');
 
 /* private function */
 function generateRank(num) {
@@ -117,16 +118,10 @@ function getLLHandler(body, res) {
     if (isNotRegisteredCommand(userId, res)) {
         return;
     }
-    let result = '';
-    const learningLogs = user.getLearningLog(userId);
-    if (body.text === '') {
-        result += `You have submitted ${learningLogs.length} learning log(s) this semester.\n\n`;
-        learningLogs.forEach((log, index) => {
-            result += `Learning Log *${index + 1}* (submitted on ${log.date}):\n`;
-            result += log.content;
-            result += '\n\n';
-        });
-    }
+    const result = stringfy.reportLearningLog({
+        userId,
+        index: body.text,
+    });
     res.send({
         text: result,
     });

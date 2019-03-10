@@ -36,10 +36,24 @@ app.post('/', async (req, res) => {
 app.post('/command', async (req, res) => {
     const { body } = req;
     const type = body.command;
+    const text = body.text;
 
     if (type === '/register') {
+        if (text.length > 16) {
+            res.send({
+                text: 'Oh, your name is too long. I can only remember names shorter or equal than 16 characters.',
+            });
+            return;
+        }
         handler.registerHandler(body, res);
     } else if (type === '/get-ll') {
+        const index = parseInt(text, 10);
+        if (text !== '' && (Number.isNaN(index) || index <= 0)) {
+            res.send({
+                text: 'Not a valid index. Please enter a positive integer or omit the parameter to search all learning logs.',
+            });
+            return;
+        }
         handler.getLLHandler(body, res);
     }
 });
