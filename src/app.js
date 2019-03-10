@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const payloadParser = require('./util/payload-parser');
 const handler = require('./message/handler');
+require('./schedule');
 
 const app = express();
 const IS_CHALLENGE = false;

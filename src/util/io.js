@@ -6,8 +6,15 @@ const adapter = new FileSync('db.json');
 const db = low(adapter);
 
 db.defaults({
+    course: {
+        days: [],
+    },
     user: {},
 }).write();
+
+function appendClassDay() {
+    db.get('course.days').push(new Date().toDateString())
+}
 
 function hasUser(userId) {
     return db.get(`user.${userId}`).value() !== undefined;

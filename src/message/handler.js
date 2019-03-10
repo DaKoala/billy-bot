@@ -1,6 +1,6 @@
 const message = require('../message/message');
 const payloadParser = require('../util/payload-parser');
-const user = require('../util/user');
+const user = require('../util/io');
 const course = require('../settings');
 const stringfy = require('../util/stringfy');
 

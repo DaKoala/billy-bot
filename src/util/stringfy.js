@@ -1,4 +1,4 @@
-const user = require('./user');
+const user = require('./io');
 
 function generateRank(num) {
     if (num % 100 === 11 || num % 100 === 12 || num % 100 === 13) {
