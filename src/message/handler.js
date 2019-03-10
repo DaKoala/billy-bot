@@ -46,9 +46,14 @@ function isNotRegisteredCommand(userId, res) {
 
 /* public handlers */
 function mentionHandler(payload) {
+    const lines = [
+        '*Command Guideline*',
+        '`/register <your-name>`: Register to let the bot manage your Learning Logs and Ticket To Leave',
+        '`/get-ll [index]`: Get a specific Learning Log or omit the index parameter to get all',
+    ];
     message.sendMessage({
         channel: payloadParser.getChannel(payload),
-        text: 'How can I help you?',
+        text: lines.join('\n'),
     });
 }
 

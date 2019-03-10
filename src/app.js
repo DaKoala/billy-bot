@@ -36,7 +36,7 @@ app.post('/', async (req, res) => {
 app.post('/command', async (req, res) => {
     const { body } = req;
     const type = body.command;
-    const text = body.text;
+    const { text } = body.text;
 
     if (type === '/register') {
         if (text.length > 16) {
