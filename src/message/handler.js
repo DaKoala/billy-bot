@@ -141,10 +141,18 @@ function getLLHandler(body, res) {
 function checkTTLHandler(body, res) {
     const userId = body.user_id;
     const name = user.getUsername(userId);
-    const result = user.checkTicketToLeave(userId);
+    const dateStr = body.text;
+    if (dateStr !== '' && !user.isClassDay(dateStr)) {
+        res.send({
+            text: 'Sorry, there was not class on that day.',
+        });
+        return;
+    }
+    const result = user.checkTicketToLeave(userId, dateStr);
     const text = stringfy.reportTicketToLeave({
         name,
         checkResult: result,
+        overview: result.length > 1,
     });
     res.send({
         text,

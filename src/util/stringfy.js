@@ -56,7 +56,9 @@ function reportTicketToLeave(params) {
         }
         result.push(`${item.date}: ${icon}`);
     });
-    result.unshift(`There are ${pass + fail} scheduled classes. ${params.name} submitted ${pass} TTL(s) and missed ${fail} TTL(s).`);
+    if (params.overview) {
+        result.unshift(`There are ${pass + fail} scheduled classes. ${params.name} submitted ${pass} TTL(s) and missed ${fail} TTL(s).`);
+    }
     return result.join('\n');
 }
 

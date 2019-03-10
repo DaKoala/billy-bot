@@ -16,10 +16,14 @@ function appendClassDay() {
     db.get('course.days').push(new Date().toDateString());
 }
 
-function checkTicketToLeave(userId) {
+function isClassDay(dateStr) {
+    return db.get('course.days').value().includes(dateStr);
+}
+
+function checkTicketToLeave(userId, day) {
     const result = [];
-    const classDays = db.get('course.days').value();
     const tickets = db.get(`user.${userId}.ticketToLeave`);
+    const classDays = day === '' ? db.get('course.days').value() : [new Date(day).toLocaleDateString()];
     classDays.forEach((dateStr) => {
         result.push({
             date: dateStr,
@@ -82,6 +86,7 @@ function getLearningLog(userId) {
 
 module.exports = {
     appendClassDay,
+    isClassDay,
     checkTicketToLeave,
     hasUser,
     hasTicketToLeaveToday,
