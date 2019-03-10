@@ -39,7 +39,9 @@ app.post('/command', async (req, res) => {
     const type = body.command;
     const { text } = body;
 
-    if (type === '/register') {
+    if (type === '/instructor') {
+        handler.instructorHandler(body, res);
+    } else if (type === '/register') {
         if (text.length > 16) {
             res.send({
                 text: 'Oh, your name is too long. I can only remember names shorter or equal than 16 characters.',

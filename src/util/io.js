@@ -7,6 +7,7 @@ const db = low(adapter);
 
 db.defaults({
     course: {
+        instructor: '',
         days: [],
     },
     user: {},
@@ -18,6 +19,22 @@ function appendClassDay() {
 
 function isClassDay(dateStr) {
     return db.get('course.days').value().includes(dateStr);
+}
+
+function hasInstructor() {
+    return db.get('course.instructor').value() !== '';
+}
+
+function isInstructor(userId) {
+    return db.get('course.instructor').value() === userId;
+}
+
+function setInstructor(userId) {
+    db.set('course.instructor', userId).write();
+}
+
+function quitInstructor() {
+    db.set('course.instructor', '').write();
 }
 
 function checkTicketToLeave(userId, day) {
@@ -87,6 +104,10 @@ function getLearningLog(userId) {
 module.exports = {
     appendClassDay,
     isClassDay,
+    hasInstructor,
+    isInstructor,
+    setInstructor,
+    quitInstructor,
     checkTicketToLeave,
     hasUser,
     hasTicketToLeaveToday,

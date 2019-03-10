@@ -124,6 +124,58 @@ function registerHandler(body, res) {
     }
 }
 
+function instructorHandler(body, res) {
+    const userId = body.user_id;
+    const { text } = body;
+    const hasInstructor = user.hasInstructor();
+    const isInstructor = user.isInstructor(userId);
+    if (text === '') {
+        if (isInstructor) {
+            res.send({
+                text: 'You are the instructor of the class, type `/student` to get information of all students or `/instructor --quit` to quit instructor.',
+            });
+        } else if (!hasInstructor) {
+            res.send({
+                text: 'There is currently no instructor in the class. Type `/instructor --set` to become the instructor',
+            });
+        } else {
+            res.send({
+                text: 'Sorry, you are not the instructor. This command can only be used by the instructor',
+            });
+        }
+    } else if (text === '--quit') {
+        if (isInstructor) {
+            user.quitInstructor();
+            res.send({
+                text: 'You have quited instructor. You cannot access students\' data anymore.',
+            });
+        } else {
+            res.send({
+                text: 'Sorry, you are not the instructor. This command can only be used by the instructor',
+            });
+        }
+    } else if (text === '--set') {
+        if (isInstructor) {
+            res.send({
+                text: 'You are already the instructor.',
+            });
+        } else if (hasInstructor) {
+            res.send({
+                text: 'Sorry, a class can only have 1 instructor.',
+            });
+        } else {
+            user.setInstructor(userId);
+            res.send({
+                text: 'Now you become instructor of the class. Type `/student` to get information of all students or `/instructor --quit` to quit instructor.',
+            });
+        }
+    } else {
+        res.send({
+            text: 'This is not a valid parameter. Parameter can only be empty, `--set` or `--quit`',
+        });
+    }
+}
+
 function getLLHandler(body, res) {
     const userId = body.user_id;
     if (isNotRegisteredCommand(userId, res)) {
@@ -178,6 +230,7 @@ function messageHandler(payload) {
 
 module.exports = {
     registerHandler,
+    instructorHandler,
     mentionHandler,
     messageHandler,
     getLLHandler,
