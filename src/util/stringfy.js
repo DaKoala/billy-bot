@@ -62,8 +62,15 @@ function reportTicketToLeave(params) {
     return result.join('\n');
 }
 
+function reportStudentOverview(students) {
+    const result = students.map(student => `*${student.name}*: *${student.learningLog.length}* Learning Log(s) and *${student.ticketToLeave.length}* Ticket(s) To Leave`);
+    result.unshift(`There are *${students.length}* student(s) in the class.`);
+    return result.join('\n');
+}
+
 
 module.exports = {
     reportLearningLog,
     reportTicketToLeave,
+    reportStudentOverview,
 };

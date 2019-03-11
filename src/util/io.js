@@ -37,6 +37,10 @@ function quitInstructor() {
     db.set('course.instructor', '').write();
 }
 
+function getAllStudents() {
+    return Object.values(db.get('user').value());
+}
+
 function checkTicketToLeave(userId, day) {
     const result = [];
     const tickets = db.get(`user.${userId}.ticketToLeave`);
@@ -108,6 +112,7 @@ module.exports = {
     isInstructor,
     setInstructor,
     quitInstructor,
+    getAllStudents,
     checkTicketToLeave,
     hasUser,
     hasTicketToLeaveToday,

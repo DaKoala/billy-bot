@@ -151,7 +151,7 @@ function instructorHandler(body, res) {
             });
         } else {
             res.send({
-                text: 'Sorry, you are not the instructor. This command can only be used by the instructor',
+                text: 'Sorry, you are not the instructor. This command can only be used by the instructor.',
             });
         }
     } else if (text === '--set') {
@@ -166,7 +166,7 @@ function instructorHandler(body, res) {
         } else {
             user.setInstructor(userId);
             res.send({
-                text: 'Now you become instructor of the class. Type `/student` to get information of all students or `/instructor --quit` to quit instructor.',
+                text: 'Now you become instructor of the class. Type `/students` to get information of all students or `/instructor --quit` to quit instructor.',
             });
         }
     } else {
@@ -174,6 +174,20 @@ function instructorHandler(body, res) {
             text: 'This is not a valid parameter. Parameter can only be empty, `--set` or `--quit`',
         });
     }
+}
+
+function studentsHandler(body, res) {
+    const userId = body.user_id;
+    if (!user.isInstructor(userId)) {
+        res.send({
+            text: 'Sorry, you are not the instructor. This command can only be used by the instructor.',
+        });
+        return;
+    }
+    const students = user.getAllStudents();
+    res.send({
+        text: stringfy.reportStudentOverview(students),
+    });
 }
 
 function getLLHandler(body, res) {
@@ -231,6 +245,7 @@ function messageHandler(payload) {
 module.exports = {
     registerHandler,
     instructorHandler,
+    studentsHandler,
     mentionHandler,
     messageHandler,
     getLLHandler,

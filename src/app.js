@@ -66,6 +66,8 @@ app.post('/command', async (req, res) => {
             return;
         }
         handler.checkTTLHandler(body, res);
+    } else if (type === '/students') {
+        handler.studentsHandler(body, res);
     }
 });
 
