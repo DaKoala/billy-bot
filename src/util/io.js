@@ -41,6 +41,11 @@ function getAllStudents() {
     return Object.values(db.get('user').value());
 }
 
+function hasStudent(name) {
+    const students = getAllStudents();
+    return students.reduce((acc, cur) => cur.name === name || acc, false);
+}
+
 function checkTicketToLeave(userId, day) {
     const result = [];
     const tickets = db.get(`user.${userId}.ticketToLeave`);
@@ -113,6 +118,7 @@ module.exports = {
     setInstructor,
     quitInstructor,
     getAllStudents,
+    hasStudent,
     checkTicketToLeave,
     hasUser,
     hasTicketToLeaveToday,

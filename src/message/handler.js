@@ -3,6 +3,7 @@ const payloadParser = require('../util/payload-parser');
 const user = require('../util/io');
 const course = require('../settings');
 const stringfy = require('../util/stringfy');
+const usage = require('../util/usage');
 
 /* private function */
 function generateRank(num) {
@@ -111,15 +112,19 @@ function tickToLeaveHandler(payload) {
 function registerHandler(body, res) {
     const userId = body.user_id;
     const hasUser = user.hasUser(userId);
+    const name = body.text;
     if (hasUser) {
-        const name = user.getUsername(userId);
         res.send({
-            text: `Hi ${name}! You have already registered.`,
+            text: `Hi ${user.getUsername(userId)}! You have already registered.`,
+        });
+    } else if (user.hasStudent(name)) {
+        res.send({
+            text: 'Sorry, this name is used by other students, please use another one.',
         });
     } else {
-        user.registerUser(userId, body.text);
+        user.registerUser(userId, name);
         res.send({
-            text: `Welcome to our class, ${body.text}! Now you can submit Learning Logs and Ticket To Leave in the Slack Channel!`,
+            text: `Welcome to our class, ${name}! Now you can submit Learning Logs and Ticket To Leave in the Slack Channel!`,
         });
     }
 }
@@ -184,10 +189,22 @@ function studentsHandler(body, res) {
         });
         return;
     }
-    const students = user.getAllStudents();
-    res.send({
-        text: stringfy.reportStudentOverview(students),
-    });
+    const { text } = body;
+    if (text === '') {
+        const students = user.getAllStudents();
+        res.send({
+            text: stringfy.reportStudentOverview(students),
+        });
+        return;
+    }
+    const params = text.split(' ');
+    if (params.length !== 2) {
+        res.send({
+            text: `Invalid parameters.\n${usage('/students')}`,
+        });
+        return;
+    }
+    const [student, type] = params;
 }
 
 function getLLHandler(body, res) {
