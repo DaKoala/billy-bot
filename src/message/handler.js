@@ -220,6 +220,16 @@ function studentsHandler(body, res) {
         res.send({
             text,
         });
+    } else if (type === '--ll') {
+        const studentId = user.getUserId(name);
+        const result = stringfy.reportLearningLog({
+            userId: studentId,
+            index: '',
+            isOther: true,
+        });
+        res.send({
+            text: result,
+        });
     }
 }
 
