@@ -46,7 +46,7 @@ function hasStudent(name) {
     return students.reduce((acc, cur) => cur.name === name || acc, false);
 }
 
-function checkTicketToLeave(userId, day) {
+function checkTicketToLeave(userId, day = '') {
     const result = [];
     const tickets = db.get(`user.${userId}.ticketToLeave`);
     const classDays = day === '' ? db.get('course.days').value() : [new Date(day).toLocaleDateString()];
@@ -67,9 +67,21 @@ function getUsername(userId) {
     return db.get(`user.${userId}.name`).value();
 }
 
+function getUserId(name) {
+    const students = getAllStudents();
+    for (let i = 0; i < students.length; i += 1) {
+        const curr = students[0];
+        if (curr.name === name) {
+            return curr.id;
+        }
+    }
+    return null;
+}
+
 function registerUser(userId, name) {
     const init = {
         name,
+        id: userId,
         learningLog: [],
         ticketToLeave: [],
     };
@@ -127,5 +139,6 @@ module.exports = {
     addLearningLog,
     getLearningLog,
     getUsername,
+    getUserId,
     registerUser,
 };

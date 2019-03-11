@@ -189,22 +189,38 @@ function studentsHandler(body, res) {
         });
         return;
     }
-    const { text } = body;
-    if (text === '') {
+    const command = body.text;
+    if (command === '') {
         const students = user.getAllStudents();
         res.send({
             text: stringfy.reportStudentOverview(students),
         });
         return;
     }
-    const params = text.split(' ');
+    const params = command.split(' ');
     if (params.length !== 2) {
         res.send({
             text: `Invalid parameters.\n${usage('/students')}`,
         });
         return;
     }
-    const [student, type] = params;
+    const [name, type] = params;
+    if (!user.hasStudent(name)) {
+        res.send({
+            text: `Sorry, there is not a student called ${name} in the class. You can type \`/students\` to display all students.`,
+        });
+    } else if (type === '--ttl') {
+        const studentId = user.getUserId(name);
+        const result = user.checkTicketToLeave(studentId);
+        const text = stringfy.reportTicketToLeave({
+            name,
+            checkResult: result,
+            overview: true,
+        });
+        res.send({
+            text,
+        });
+    }
 }
 
 function getLLHandler(body, res) {
