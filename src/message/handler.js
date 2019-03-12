@@ -200,7 +200,7 @@ function studentsHandler(body, res) {
     const params = command.split(' ');
     if (params.length !== 2) {
         res.send({
-            text: `Invalid parameters.\n${usage('/students')}`,
+            text: `Invalid parameters.\n${usage.singleUsage('/students')}`,
         });
         return;
     }
