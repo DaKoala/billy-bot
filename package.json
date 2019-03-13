@@ -4,6 +4,7 @@
   "description": "Billy's Slack Bot",
   "main": "src/app.js",
   "scripts": {
+    "start": "node src/app.js",
     "dev": "nodemon --ignore db.json app.js",
     "lint": "eslint src/**",
     "ngrok": "ngrok http 3000 -host-header='localhost:3000'"
