@@ -251,6 +251,7 @@ function checkTTLHandler(body, res) {
         res.send({
             text: 'This semester has not begun yet!',
         });
+        return;
     }
     if (dateStr !== '' && !user.isClassDay(dateStr)) {
         res.send({
@@ -262,7 +263,7 @@ function checkTTLHandler(body, res) {
     const text = stringfy.reportTicketToLeave({
         name,
         checkResult: result,
-        overview: result.length > 1,
+        overview: result.length > 1 || dateStr === '',
     });
     res.send({
         text,
