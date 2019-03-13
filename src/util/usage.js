@@ -23,7 +23,7 @@ function singleUsage(command) {
     if (command === '/check-ttl') {
         return [
             '`/check-ttl`: Check all class days about whether you submitted a Ticket To Leave',
-            '`/check-ttl <day(MM-DD-YYYY)>`: Check if you submitted a Ticket To Leave on a specific day',
+            '`/check-ttl <MM/DD/YYYY>`: Check if you submitted a Ticket To Leave on a specific day',
         ].join('\n');
     }
     if (command === '/register') {

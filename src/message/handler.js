@@ -28,7 +28,7 @@ function isNotRegistered(payload) {
     if (!isExisted) {
         message.sendEphemeral({
             channel: payloadParser.getChannel(payload),
-            text: 'You have not registered yet. Please use the `/register <your-name>` command to register!',
+            text: `You have not registered yet.\n${usage.singleUsage('/register')}`,
             user: userId,
         });
     }
@@ -39,7 +39,7 @@ function isNotRegisteredCommand(userId, res) {
     const isExisted = user.hasUser(userId);
     if (!isExisted) {
         res.send({
-            text: 'You have not registered yet. Please use the `/register <your-name>` command to register!',
+            text: `You have not registered yet.\n${usage.singleUsage('/register')}`,
         });
     }
     return !isExisted;
@@ -47,14 +47,10 @@ function isNotRegisteredCommand(userId, res) {
 
 /* public handlers */
 function mentionHandler(payload) {
-    const lines = [
-        '*Command Guideline*',
-        '`/register <your-name>`: Register to let the bot manage your Learning Logs and Ticket To Leave',
-        '`/get-ll [index]`: Get a specific Learning Log or omit the index parameter to get all',
-    ];
+    const userId = payloadParser.getUser(payload);
     message.sendMessage({
         channel: payloadParser.getChannel(payload),
-        text: lines.join('\n'),
+        text: usage.userHelp(userId),
     });
 }
 
@@ -74,7 +70,7 @@ function learningLogHandler(payload) {
         const count = user.addLearningLog(userId, text);
         message.sendEphemeral({
             channel: payloadParser.getChannel(payload),
-            text: `Nice work! This is the ${generateRank(count)} learning log you submitted and you are required to submit ${course.LL_NUMBER} learning logs this semester. You can use the command \`/get-ll\` to retrieve your learning logs.`,
+            text: `Nice work! This is the ${generateRank(count)} learning log you submitted and you are required to submit ${course.LL_NUMBER} learning logs this semester.\n${usage.singleUsage('/get-ll')}`,
             user: userId,
         });
     }
@@ -124,7 +120,7 @@ function registerHandler(body, res) {
     } else {
         user.registerUser(userId, name);
         res.send({
-            text: `Welcome to our class, ${name}! Now you can submit Learning Logs and Ticket To Leave in the Slack Channel!`,
+            text: `Welcome to our class, ${name}!\n${usage.userHelp(userId)}`,
         });
     }
 }
@@ -137,7 +133,7 @@ function instructorHandler(body, res) {
     if (text === '') {
         if (isInstructor) {
             res.send({
-                text: 'You are the instructor of the class, type `/student` to get information of all students or `/instructor --quit` to quit instructor.',
+                text: `You are already the instructor of the class.\n${usage.userHelp(userId)}`,
             });
         } else if (!hasInstructor) {
             res.send({
@@ -171,7 +167,7 @@ function instructorHandler(body, res) {
         } else {
             user.setInstructor(userId);
             res.send({
-                text: 'Now you become instructor of the class. Type `/students` to get information of all students or `/instructor --quit` to quit instructor.',
+                text: `Now you become instructor of the class.\n${usage.userHelp(userId)}`,
             });
         }
     } else {
@@ -268,6 +264,13 @@ function checkTTLHandler(body, res) {
     });
 }
 
+function helpHandler(body, res) {
+    const userId = body.user_id;
+    res.send({
+        text: usage.userHelp(userId),
+    });
+}
+
 /* main handler */
 function messageHandler(payload) {
     const text = payloadParser.getText(payload);
@@ -293,4 +296,5 @@ module.exports = {
     messageHandler,
     getLLHandler,
     checkTTLHandler,
+    helpHandler,
 };

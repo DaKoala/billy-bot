@@ -31,7 +31,7 @@ function reportLearningLog(params) {
         result += `Learning Log ${index} (submitted on ${log.date}):\n`;
         result += log.content;
     } else {
-        result += `${person} submitted ${learningLogs.length} Learning Log(s) this semester.\n\n`
+        result += `${person} submitted ${learningLogs.length} Learning Log(s) this semester.\n\n`;
         learningLogs.forEach((log, index) => {
             result += `Learning Log *${index + 1}* (submitted on ${log.date}):\n`;
             result += log.content;

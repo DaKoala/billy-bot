@@ -68,6 +68,8 @@ app.post('/command', async (req, res) => {
         handler.checkTTLHandler(body, res);
     } else if (type === '/students') {
         handler.studentsHandler(body, res);
+    } else if (type === '/bot-help') {
+        handler.helpHandler(body, res);
     }
 });
 
