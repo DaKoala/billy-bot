@@ -4,7 +4,7 @@
   "description": "Billy's Slack Bot",
   "main": "src/app.js",
   "scripts": {
-    "forever": "forever start -o logs/out.log -e logs/err.log src/app.js",
+    "forever": "forever start -o out.log -e err.log -a src/app.js",
     "start": "node src/app.js",
     "dev": "nodemon --ignore db.json app.js",
     "lint": "eslint src/**",
