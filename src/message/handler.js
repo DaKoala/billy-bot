@@ -247,6 +247,11 @@ function checkTTLHandler(body, res) {
     const userId = body.user_id;
     const name = user.getUsername(userId);
     const dateStr = body.text;
+    if (user.getClassDays().length === 0) {
+        res.send({
+            text: 'This semester has not begun yet!',
+        });
+    }
     if (dateStr !== '' && !user.isClassDay(dateStr)) {
         res.send({
             text: 'Sorry, there was not class on that day.',

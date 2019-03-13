@@ -21,6 +21,10 @@ function isClassDay(dateStr) {
     return db.get('course.days').value().includes(dateStr);
 }
 
+function getClassDays() {
+    return db.get('course.days').value();
+}
+
 function hasInstructor() {
     return db.get('course.instructor').value() !== '';
 }
@@ -125,6 +129,7 @@ function getLearningLog(userId) {
 module.exports = {
     appendClassDay,
     isClassDay,
+    getClassDays,
     hasInstructor,
     isInstructor,
     setInstructor,
