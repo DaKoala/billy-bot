@@ -102,6 +102,8 @@ You may want to verify your URL to enable Event Subscriptions in Slack App. To d
 
 **General Commands**
 
+`/bot-help`: Display helping menu
+
 `/register <name>`: Use your name to register as a student of the class
 
 `/instructor --set`: Become the instructor if there is no instructor
