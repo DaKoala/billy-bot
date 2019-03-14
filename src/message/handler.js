@@ -48,7 +48,7 @@ function isNotRegisteredCommand(userId, res) {
 /* public handlers */
 function mentionHandler(payload) {
     const userId = payloadParser.getUser(payload);
-    message.sendMessage({
+    message.sendEphemeral({
         channel: payloadParser.getChannel(payload),
         text: usage.userHelp(userId),
     });
