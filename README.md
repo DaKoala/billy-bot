@@ -1,6 +1,28 @@
 # Billy Bot
 A Slack Bot designed specifically for the class *Dynamic Web Application*. The bot can automatically store Learning Logs and Tickets to Leave submitted by students in the Slack channel. Students can check the submission status of their Tickets to Leave or retrieve their Learning Logs. As instructors, they can do the same thing on every student in the class.
 
+## File Structure
+```
+billy-bot
+|-- .eslint # ESlint config
+|-- db.json # lowdb storage
+|-- token.js # Bot token
+|-- src
+    |-- app.js # Main entrance of the application
+    |-- schedule.js # Some schedule tasks
+    |-- settings.js # Course settings
+    |-- message
+        |-- config.js # URL of APIs
+        |-- message.js # Request sender
+        |-- handler.js # Handler of events and slash commands
+    |-- util
+        |-- io.js # Database I/O
+        |-- moment.js # Format time/date
+        |-- payload-parser.js # Parse Slack requests
+        |-- stringfy.js # Format text sent to Slack
+        |-- usage.js # Format usage of commands
+```
+
 ## Installation
 ```bash
 # Clone the repository
@@ -71,5 +93,44 @@ module.exports = {
 };
 ```
 
-## Verify your URL
+## Verify Your URL
 You may want to verify your URL to enable Event Subscriptions in Slack App. To do this, set the variable `IS_CHALLENGE` to `true` locating on line 8 in the `src/app.js` file. After you pass the verification, set it to `false`.
+
+## User Guidelines
+
+### Slash Commands
+
+**General Commands**
+
+`/register <name>`: Use your name to register as a student of the class
+
+`/instructor --set`: Become the instructor if there is no instructor
+
+**Student Commands**
+
+`/check-ttl`: Check all class days about whether you submitted a Ticket To Leave
+
+`/check-ttl <MM/DD/YYYY>`: Check if you submitted a Ticket To Leave on a specific day
+
+`/get-ll`: Retrieve all Learning Logs
+
+`/get-ll <index>`: Get your n-th Learning Log this semester
+
+**Instructor Commands**
+
+`/instructor --quit`: As a instructor, quit instructor
+
+`/students`: Overview all students
+
+`/students <name> --ttl`: Check a specific student's Tickets To Leave
+
+`/students <name> --ll`: Retrieve a specific student's Learning Logs
+
+
+
+### Submit Ticket to Leave / Learning Log
+
+First use the command above to register as a student.
+
+In the channel, messages begin with `#TTL` are considered as Tickets to Leave. Messages begin with `#LL` are considered as Learning Logs.
+
