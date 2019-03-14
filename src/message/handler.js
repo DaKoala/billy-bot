@@ -51,6 +51,7 @@ function mentionHandler(payload) {
     message.sendEphemeral({
         channel: payloadParser.getChannel(payload),
         text: usage.userHelp(userId),
+        user: userId,
     });
 }
 
